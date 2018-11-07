@@ -9,7 +9,7 @@
   ],
   "main": "server.js",
   "scripts": {
-    "start": "node server",
+    "start": "node server --mode=production",
     "dev": "nodemon server"
   },
   "homepage": "https://github.com/mapmeld/koa-passport-example",

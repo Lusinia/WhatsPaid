@@ -45,5 +45,5 @@ app.use(web);
 
 
 // start server
-const port = process.env.APP_PORT || 3200;
+const port =  process.env.PORT || process.env.APP_PORT;
 app.listen(port, () => console.log('Server listening on', port));

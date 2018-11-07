@@ -7,4 +7,4 @@ module.exports = async (ctx, next) => {
     ctx.body = createReadStream(path.join(__dirname, 'views/index.html'));
   }
   await next();
-};
+ };
