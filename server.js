@@ -7,7 +7,9 @@ const logger = require('koa-logger');
 const helmet = require('koa-helmet');
 const koaBody = require('koa-bodyparser');
 const cloudinary = require('cloudinary');
+const serve = require('koa-static');
 
+const web = require('./middlewares/web');
 const responses = require('./middlewares/response');
 
 const routes = require('./routes');
@@ -26,6 +28,7 @@ cloudinary.config({
 // trust proxy
 app.proxy = true;
 
+app.use(serve(__dirname + '/views'));
 app.use(logger());
 app.use(koaBody());
 app.use(cors());
@@ -35,6 +38,7 @@ app.use(responses);
 
 app.use(routes.routes());
 app.use(routes.allowedMethods());
+app.use(web);
 
 
 // start server
