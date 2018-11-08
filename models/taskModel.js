@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const TaskSchema = {
   name: {
     type: String,
-    unique: true,
     required: true,
     trim: true
   },

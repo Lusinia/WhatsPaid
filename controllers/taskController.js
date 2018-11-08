@@ -5,19 +5,21 @@ const mongoose = require('mongoose');
 
 const getResult = async (ctx) => {
   const data = await Result.find({}).populate('items').exec();
-  ctx.sendCreated(data);
+  ctx.sendOK(data);
 };
 
 const getAll = async (ctx) => {
+  console.log('ctx.body', ctx.body);
   const data = await Task.find({});
-  ctx.sendCreated(data);
+  console.log('data', data);
+  ctx.sendOK(data);
 };
 
 
 const createTask = async ({ sendCreated, sendError, request: { body } }) => {
-    if (body.imageURL) {
-      const result = await cloudinary.uploader.upload(body.imageURL);
-      body.imageURL = result.secure_url;
+    if (body.image) {
+      const result = await cloudinary.uploader.upload(body.image);
+      body.image = result.secure_url;
     }
     const task = await Task.create(body);
     sendCreated(task);
@@ -27,9 +29,9 @@ const updateTask = async ({ sendCreated, sendError, request: { body }, params: {
   try {
     const task = await Task.findById(id);
     if (task) {
-      if (body.imageURL) {
-        const result = await cloudinary.uploader.upload(body.imageURL);
-        body.imageURL = result.secure_url;
+      if (body.image) {
+        const result = await cloudinary.uploader.upload(body.image);
+        body.image = result.secure_url;
       }
 
       const newTask = await Task.findOneAndUpdate({ _id: id }, { $set: { ...body, date: new Date() } }, { new: false });
