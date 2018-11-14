@@ -13,6 +13,7 @@ const serve = require('koa-static');
 const web = require('./middlewares/web');
 const responses = require('./middlewares/response');
 const headers = require('./middlewares/headers');
+const auth = require('./middlewares/auth');
 
 const routes = require('./routes');
 
@@ -38,6 +39,7 @@ app.use(helmet());
 app.use(koaBody());
 app.use(headers);
 app.use(responses);
+app.use(auth);
 
 app.use(routes.routes());
 app.use(routes.allowedMethods());

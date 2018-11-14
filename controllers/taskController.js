@@ -4,14 +4,17 @@ const cloudinary = require('cloudinary');
 const mongoose = require('mongoose');
 
 const getResult = async (ctx) => {
-  const data = await Result.find({}).populate('items').exec();
+  const data = await Result.find({});
   ctx.sendOK(data);
 };
 
+const setDebit = async (ctx) => {
+  // const data = await Result.find({});
+  // ctx.sendOK(data);
+};
+
 const getAll = async (ctx) => {
-  console.log('ctx.body', ctx.body);
   const data = await Task.find({});
-  console.log('data', data);
   ctx.sendOK(data);
 };
 

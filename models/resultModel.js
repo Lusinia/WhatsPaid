@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const ResultSchema = {
-  costs: Number,
-  items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
+  debit: Number,
+  credit: Number,
   currency: {
     type: String,
     default: 'грн'
