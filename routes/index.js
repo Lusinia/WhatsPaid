@@ -4,7 +4,7 @@ const taskRoutes = require('./taskRoutes');
 const userRoutes = require('./userRoutes');
 
 router.use('/api/tasks', taskRoutes);
-router.use('/api/auth', userRoutes);
+router.use('/api/user', userRoutes);
 
 
 module.exports = router;

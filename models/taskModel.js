@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const TaskSchema = {
   name: {
     type: String,
-    required: true,
-    trim: true
+    required: true
   },
   image: String,
   cost: {
@@ -18,7 +17,8 @@ const TaskSchema = {
   date: {
     type: Date,
     default: new Date()
-  }
+  },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 };
 
 module.exports = mongoose.model('Task', TaskSchema);
