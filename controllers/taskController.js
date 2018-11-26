@@ -5,8 +5,34 @@ const mongoose = require('mongoose');
 
 
 const getAll = async (ctx) => {
-  if (ctx.user) {
-    const data = await Task.find({ user: ctx.user._id });
+  const { year } = ctx.request.query;
+  const queryYear = Number(year || new Date().getFullYear());
+  if (ctx.user && queryYear) {
+    const data = await Task.aggregate([
+      {
+        $addFields: { month: { $month: '$date' }, year: { $year: '$date' } }
+      },
+      { $match: { $and: [{ user: ctx.user._id }, { year: queryYear }] } },
+      {
+        $group: {
+          _id: { month: '$month', year: '$year' },
+          count: { $sum: '$cost' },
+          tasks: {
+            $push: {
+              _id: '$_id',
+              name: '$name',
+              image: '$image',
+              cost: '$cost',
+              currency: '$currency',
+              user: '$user',
+              date: '$date',
+            }
+          }
+        }
+      },
+      { $sort: { '_id.month': -1 } },
+    ]);
+
     ctx.sendOK({ data });
   } else {
     ctx.sendError('no user found');
@@ -14,7 +40,7 @@ const getAll = async (ctx) => {
 };
 
 const getResult = async (ctx) => {
-   if (ctx.user) {
+  if (ctx.user) {
     const user = await User.findById(ctx.user._id);
     ctx.sendOK({ data: user.result });
   } else {
@@ -63,7 +89,7 @@ const updateTask = async ({ sendCreated, sendError, request: { body }, params: {
       };
       await User.findByIdAndUpdate(user._id, { $set: { result: updatedResult } }, { new: true });
       const newTask = await Task.findOneAndUpdate({ _id: id }, { $set: { ...body, date: new Date() } }, { new: false });
-      sendCreated({data: newTask});
+      sendCreated({ data: newTask });
     } else {
       sendError('Something went wrong');
     }
@@ -82,3 +108,4 @@ const deleteTask = async ({ user, sendSuccess, params: { id } }) => {
 module.exports = {
   getAll, createTask, updateTask, deleteTask, getResult
 };
+
